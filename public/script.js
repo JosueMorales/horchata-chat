@@ -1,6 +1,6 @@
 let socket = io();
 let app = angular.module('horchata', []);
-app.controller("ChatController", function ($scope) {
+app.controller("ChatController", function ($scope, $timeout) {
   let vm = this;
   vm.messages = [];
   vm.users = [];
@@ -31,6 +31,7 @@ app.controller("ChatController", function ($scope) {
           time: new Date(new Date().getTime()).toLocaleTimeString(),
           text: data.user.nickname + ' has joined.'
       });
+      scrollMessages();
       vm.users = data.users;
     });
   });
@@ -41,6 +42,7 @@ app.controller("ChatController", function ($scope) {
           time: new Date(new Date().getTime()).toLocaleTimeString(),
           text: data.nickname + ' has left.'
       });
+      scrollMessages();
       vm.users = data.users;
     });
   });
@@ -51,6 +53,13 @@ app.controller("ChatController", function ($scope) {
           user: data.user,
           text: data.text
       });
+      scrollMessages();
     });
   });
+  var scrollMessages = ()=>{
+    $timeout(()=>{
+      var scroller = document.getElementById("chat-messages");
+      scroller.scrollTop = scroller.scrollHeight;
+    }, 0, false);
+  }
 });

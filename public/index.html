@@ -6,7 +6,7 @@
     <title>Socket IO</title>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="/styles.css"/>
     <!--Socket IO -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
     <!-- AngularJS -->
@@ -45,24 +45,26 @@
             <div ng-if="chat.user" class="row">
               <div class="col-sm-4">
                 <ul class="list-group">
-                  <li class="list-group-item active">{{chat.users.length}} Active Users</li>
-                  <li class="list-group-item" ng-repeat="user in chat.users">
-                    <span ng-if="user.nickname === chat.user.nickname">{{user.nickname}}</span>
-                    <a href="#" ng-click="chat.private(user)" ng-if="user.nickname !== chat.user.nickname">{{user.nickname}}</a>
+                  <li class="list-group-item active" ng-click="showUsers=!showUsers">{{chat.users.length}} Active Users</li>
+                  <li class="list-group-item active-user" ng-show="showUsers" ng-repeat="user in chat.users">
+                    <span ng-if="user.nickname === chat.user.nickname"><b>{{user.nickname}}</b></span>
+                    <span ng-if="user.nickname !== chat.user.nickname">{{user.nickname}}</span>
                   </li>
                 </ul>
               </div>
               <div class="col-sm-8">
-                <ul class="list-group">
-                  <li class="list-group-item" ng-repeat="message in chat.messages">
-                    <span ng-if="message.user">
-                      {{message.time}} - {{ message.user.nickname}}: {{message.text}}
-                    </span>
-                    <span ng-if="!message.user" class="text-muted">
-                      {{message.time}} - {{message.text}}
-                    </span>
-                  </li>
-                </ul>
+                <div id="chat-messages">
+                  <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="message in chat.messages">
+                      <span ng-if="message.user">
+                        {{message.time}} - <b>{{ message.user.nickname}}:</b> {{message.text}}
+                      </span>
+                      <span ng-if="!message.user" class="text-muted">
+                        {{message.time}} - {{message.text}}
+                      </span>
+                    </li>
+                  </ul>
+                </div>
                 <form ng-submit="chat.sendMessage()">
                   <div class="row">
                     <div class="col-sm-12">
